@@ -13,3 +13,4 @@ class Cliente:
 
     def enviar_arquivo(self, nome_arquivo, dados):
         # Envia o arquivo para o gerenciador
+        pass
