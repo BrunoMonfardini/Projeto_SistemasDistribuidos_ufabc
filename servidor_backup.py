@@ -15,6 +15,7 @@ def lidar_cliente(conexao, endereco, replica=False):
     print(f'Conectado por {endereco}')
     nome_arquivo = conexao.recv(1024).decode()
     caminho_arquivo = os.path.join(BACKUP_DIR, nome_arquivo)
+    print(caminho_arquivo)
     with open(caminho_arquivo, 'wb') as f:
         while True:
             data = conexao.recv(1024)
@@ -22,7 +23,6 @@ def lidar_cliente(conexao, endereco, replica=False):
                 break
             f.write(data)
     print(f'Arquivo {nome_arquivo} foi salvo.')
-
 
 def replicar_arquivo(nome_arquivo, ip, porta):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -44,6 +44,7 @@ def iniciar_servidor():
         print(f'Servidor escutando em {HOST}:{PORTA}')
         while True:
             conn, addr = s.accept()
+            print(conn, addr)
             threading.Thread(target=lidar_cliente, args=(conn, addr)).start()
 
 if __name__ == '__main__':
