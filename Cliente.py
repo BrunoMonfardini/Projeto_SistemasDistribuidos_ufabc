@@ -1,16 +1,27 @@
 import os
+import sys
 
-class Cliente:
-    def __init__(self):
-        self.diretorio_raiz = "/cliente/"
+def listar_arquivos(diretorio):
+    return [f for f in os.listdir(diretorio) if os.path.isfile(os.path.join(diretorio, f))]
 
-    def selecionar_arquivo(self):
-        nome_arquivo = input("Digite o nome do arquivo: ")
-        caminho_arquivo = os.path.join(self.diretorio_raiz, nome_arquivo)
-        with open(caminho_arquivo, 'rb') as f:
-            dados = f.read()
-        return nome_arquivo, dados
+diretorio_raiz = "cliente"
 
-    def enviar_arquivo(self, nome_arquivo, dados):
-        # Envia o arquivo para o gerenciador
-        pass
+def main():
+    print("Escolha um arquivo para enviar:")
+    files = listar_arquivos(diretorio_raiz)
+    for idx, file in enumerate(files):
+        print(f"{idx + 1}: {file}")
+
+    escolha = int(input("Digite o número do arquivo: ")) - 1
+
+    if 0 <= escolha < len(files):
+        caminho_arquivo = os.path.join(diretorio_raiz, files[escolha])
+        print(caminho_arquivo)
+        print(f"Enviando arquivo {caminho_arquivo}...")
+        os.system(f'python gerenciador.py {caminho_arquivo}')
+    else:
+        print("Escolha inválida.")
+    
+if __name__ == '__main__':
+    main()
+
