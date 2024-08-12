@@ -14,6 +14,7 @@ if not os.path.exists(BACKUP_DIR):
 def lidar_cliente(conexao, endereco, replica=False):
     print(f'Conectado por {endereco}')
     nome_arquivo = conexao.recv(1024).decode()
+    print(nome_arquivo)
     caminho_arquivo = os.path.join(BACKUP_DIR, nome_arquivo)
     print(caminho_arquivo)
     with open(caminho_arquivo, 'wb') as f:
@@ -24,18 +25,19 @@ def lidar_cliente(conexao, endereco, replica=False):
             f.write(data)
     print(f'Arquivo {nome_arquivo} foi salvo.')
 
-def replicar_arquivo(nome_arquivo, ip, porta):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.connect((ip, porta))
-            s.sendall(nome_arquivo.encode())
-            filepath = os.path.join(BACKUP_DIR, nome_arquivo)
-            with open(filepath, 'rb') as f:
-                while True:
-                    data = f.read(1024)
-                    if not data:
-                        break
-                    s.sendall(data)
-            print(f'Arquivo {nome_arquivo} replicado para {ip}:{porta}')
+# def replicar_arquivo(nome_arquivo, ip, porta):
+#         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+#             s.connect((ip, porta))
+#             s.sendall(nome_arquivo.encode())
+#             filepath = os.path.join(BACKUP_DIR, nome_arquivo)
+#             print(filepath)
+#             with open(filepath, 'rb') as f:
+#                 while True:
+#                     data = f.read(1024)
+#                     if not data:
+#                         break
+#                     s.sendall(data)
+#             print(f'Arquivo {nome_arquivo} replicado para {ip}:{porta}')
 
 def iniciar_servidor():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
